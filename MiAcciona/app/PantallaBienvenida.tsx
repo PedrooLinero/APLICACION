@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Modal, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Modal, TouchableOpacity, Image, Dimensions, PixelRatio } from 'react-native';
+
+// Ajuste del tamaño de la fuente según la densidad de píxeles
+const scaleFont = (size) => size * PixelRatio.get() * 0.8; // Reducimos la escala para hacer las fuentes más pequeñas
 
 export default function PantallaBienvenida({ onLogin }) {
   // Estado para manejar la visibilidad del modal
   const [modalVisible, setModalVisible] = useState(true);
+
+  // Obtener el ancho de la pantalla
+  const windowWidth = Dimensions.get('window').width;
+
+  const scale = PixelRatio.get();
 
   return (
     <View style={{ flex: 1 }}>
@@ -15,7 +23,7 @@ export default function PantallaBienvenida({ onLogin }) {
         onRequestClose={() => setModalVisible(false)} // Cierra el modal al presionar atrás
       >
         <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
+          <View style={[styles.modalContainer, { width: windowWidth * 0.85 }]}>
             <View style={styles.header}>
               {/* Aquí se coloca la imagen a la izquierda de "MiAcciona" */}
               <Image source={require('../assets/images/adaptive-icon.png')} style={styles.logo} />
@@ -60,10 +68,9 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     backgroundColor: '#FFF',
-    paddingVertical: 25,
+    paddingVertical: 30,
     paddingHorizontal: 30,
     borderRadius: 20,
-    width: 280, // Tamaño más pequeño para el modal
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
@@ -77,31 +84,31 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    width: 20, // Imagen más pequeña
-    height: 30,
+    width: 30, // Imagen más grande para mejor visibilidad
+    height: 50,
     marginRight: 10,
   },
   modalTitle: {
-    fontSize: 24, // Un tamaño de fuente más pequeño
+    fontSize: scaleFont(24), // Ajustamos el tamaño para hacerlo más pequeño
     fontWeight: '700',
     color: '#333',
     fontFamily: 'Roboto',
   },
   input: {
     width: '100%',
-    padding: 8, // Menos padding para hacerlo más pequeño
-    marginBottom: 10, // Menos espacio entre los inputs
+    padding: 12, // Aumenté el padding para hacer los inputs más grandes
+    marginBottom: 15,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 20,
-    fontSize: 14, // Tamaño de fuente más pequeño
+    fontSize: scaleFont(14), // Ajustamos el tamaño de los inputs
     color: '#333',
     backgroundColor: '#F5F5F5',
   },
   button: {
     backgroundColor: '#D50032',
     borderRadius: 20,
-    paddingVertical: 10,
+    paddingVertical: 12,
     paddingHorizontal: 40,
     width: '100%', // Hace que el botón sea del mismo tamaño que los inputs
     alignItems: 'center',
@@ -111,11 +118,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
-    
   },
   buttonText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: scaleFont(14), // Ajustamos el tamaño de la fuente del botón
     fontWeight: '600',
     letterSpacing: 1,
   },
